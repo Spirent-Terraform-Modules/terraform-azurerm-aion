@@ -1,6 +1,3 @@
-## Example : This Terraform module deploys Spirent TestCenter Virtual Machines from an Azure Marketplace image.
-# The example requires the user to provide an already existing virtual network , management subnet, test subnet names.
-
 provider "azurerm" {
   version                    = ">=2.37.0"
   skip_provider_registration = "true"
@@ -15,12 +12,11 @@ data "azurerm_subnet" "mgmt_plane" {
 
 module "aion" {
   source                    = "../.."
-  
+
   instance_count            = 1
   instance_size             = "Standard_F4s_v2"
   resource_group_name       = "default"
   resource_group_location   = "West US 2"
-  virtual_network_name      = "STCv"
   admin_username            = "azuretest"
   public_key                = "~/.ssh/id_rsa.pub"
   private_key_file          = "~/.ssh/id_rsa"
@@ -51,4 +47,9 @@ variable "aion_user" {
   description = "AION user. Specify using command line or env variables."
 }
 
+variable "virtual_network_name" {
+  type        = string
+  description = "VNET name in Azure"
+  default     = ""
+}
 

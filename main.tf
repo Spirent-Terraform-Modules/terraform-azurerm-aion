@@ -5,11 +5,11 @@ provider "azurerm" {
 }
 
 resource "azurerm_network_security_group" "mgmt_plane" {
-  
+
   name                = "nsg-${var.instance_name}"
   location            = var.resource_group_location
   resource_group_name = var.resource_group_name
-  
+
   security_rule {
     name                       = "ssh"
     priority                   = 101
@@ -21,7 +21,7 @@ resource "azurerm_network_security_group" "mgmt_plane" {
     source_address_prefixes    = var.ingress_cidr_blocks
     destination_address_prefix = "*"
   }
-  
+
   security_rule {
     name                       = "http"
     priority                   = 102
@@ -33,7 +33,7 @@ resource "azurerm_network_security_group" "mgmt_plane" {
     source_address_prefixes    = var.ingress_cidr_blocks
     destination_address_prefix = "*"
   }
-  
+
   security_rule {
     name                       = "https"
     priority                   = 103
@@ -45,7 +45,7 @@ resource "azurerm_network_security_group" "mgmt_plane" {
     source_address_prefixes    = var.ingress_cidr_blocks
     destination_address_prefix = "*"
   }
-  
+
   security_rule {
     name                       = "application-usage"
     priority                   = 104
@@ -57,22 +57,10 @@ resource "azurerm_network_security_group" "mgmt_plane" {
     source_address_prefixes    = var.ingress_cidr_blocks
     destination_address_prefix = "*"
   }
-  
+
   security_rule {
     name                       = "icmp"
     priority                   = 106
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "icmp"
-    source_port_range          = "*"
-    destination_port_range     = "*"
-    source_address_prefixes    = var.ingress_cidr_blocks
-    destination_address_prefix = "*"
-  }
-  
-  security_rule {
-    name                       = "icmpv6"
-    priority                   = 108
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "icmp"
@@ -101,13 +89,13 @@ resource "azurerm_network_interface" "mgmt_plane" {
     name                          = "ipc-mgmt-${var.instance_name}-${count.index}"
     subnet_id                     = var.mgmt_plane_subnet_id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = "${element(azurerm_public_ip.aion.*.id, count.index)}"
+    public_ip_address_id          = element(azurerm_public_ip.aion.*.id, count.index)
   }
 }
 
 resource "azurerm_network_interface_security_group_association" "mgmt_plane" {
   count                     = var.instance_count
-  network_interface_id      = "${element(azurerm_network_interface.mgmt_plane.*.id, count.index)}"
+  network_interface_id      = element(azurerm_network_interface.mgmt_plane.*.id, count.index)
   network_security_group_id = azurerm_network_security_group.mgmt_plane.id
 }
 
@@ -145,7 +133,7 @@ resource "azurerm_linux_virtual_machine" "aion" {
   name                  = "${var.instance_name}${count.index}"
   location              = var.resource_group_location
   resource_group_name   = var.resource_group_name
-  network_interface_ids = ["${element(azurerm_network_interface.mgmt_plane.*.id, count.index)}"]
+  network_interface_ids = [element(azurerm_network_interface.mgmt_plane.*.id, count.index)]
   size                  = var.instance_size
   admin_username        = var.admin_username
 
@@ -159,7 +147,7 @@ resource "azurerm_linux_virtual_machine" "aion" {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
-  
+
   source_image_id        = data.azurerm_image.aion.id
 }
 

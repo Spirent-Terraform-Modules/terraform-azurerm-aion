@@ -66,7 +66,6 @@ If you would like to configure the Spirent AION platform in a web browser set th
 | public\_key | File path to public key. | `string` | n/a | yes |
 | resource\_group\_location | RG location in Azure | `string` | `""` | no |
 | resource\_group\_name | RG name in Azure | `string` | `""` | no |
-| virtual\_network\_name | VNET name in Azure | `string` | `""` | no |
 
 ## Outputs
 

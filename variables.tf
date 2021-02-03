@@ -29,12 +29,6 @@ variable "resource_group_location" {
   default     = ""
 }
 
-variable "virtual_network_name" {
-  type        = string
-  description = "VNET name in Azure"
-  default     = ""
-}
-
 variable "mgmt_plane_subnet_id" {
   description = "Management public Azure subnet ID."
   type        = string
@@ -42,7 +36,7 @@ variable "mgmt_plane_subnet_id" {
 }
 
 variable "enable_provisioner" {
-  description = "Enable provisioning"
+  description = "Enable provisioning.  When enabled instances will be initialized with the specified variables."
   type        = bool
   default     = true
 }
@@ -87,7 +81,7 @@ variable "admin_email" {
 }
 
 variable "admin_password" {
-  description = "Cluster admin user password. Use this to login to to the instance web page."
+  description = "Cluster admin user password. Use this to login to the instance web page."
   type        = string
 }
 
@@ -134,7 +128,7 @@ variable "metrics_opt_out" {
 }
 
 variable "dest_dir" {
-  description = "Destination directory on the instance where provisining files will be copied"
+  description = "Destination directory on the instance where provisioning files will be copied"
   type        = string
   default     = "~"
 }
