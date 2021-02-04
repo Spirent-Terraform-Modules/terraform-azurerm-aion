@@ -47,9 +47,3 @@ variable "aion_user" {
   description = "AION user. Specify using command line or env variables."
 }
 
-variable "virtual_network_name" {
-  type        = string
-  description = "VNET name in Azure"
-  default     = ""
-}
-

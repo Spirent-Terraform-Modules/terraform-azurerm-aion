@@ -26,7 +26,6 @@ Run Spirent AION Platform.
 | admin\_password | New cluster admin password. Specify using command line or env variables. | `any` | n/a | yes |
 | aion\_password | AION password. Specify using command line or env variables. | `any` | n/a | yes |
 | aion\_user | AION user. Specify using command line or env variables. | `any` | n/a | yes |
-| virtual\_network\_name | VNET name in Azure | `string` | `""` | no |
 
 ## Outputs
 
