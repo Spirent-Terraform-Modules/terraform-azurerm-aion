@@ -138,7 +138,7 @@ variable "public_key" {
   type        = string
 }
 
-variable "private_key_file" {
+variable "private_key" {
   description = "File path to private key"
   type        = string
 }

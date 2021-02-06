@@ -5,24 +5,24 @@ provider "azurerm" {
 }
 
 data "azurerm_subnet" "mgmt_plane" {
-  name                 = "stcv-mgmt"
-  virtual_network_name = "STCv"
-  resource_group_name  = "default"
+  name                 = var.mgmt_subnet_name
+  virtual_network_name = var.virtual_network_name
+  resource_group_name  = var.resource_group_name
 }
 
 module "aion" {
   source                    = "../.."
 
-  instance_count            = 1
-  instance_size             = "Standard_F4s_v2"
-  resource_group_name       = "default"
-  resource_group_location   = "West US 2"
-  admin_username            = "azuretest"
-  public_key                = "~/.ssh/id_rsa.pub"
-  private_key_file          = "~/.ssh/id_rsa"
+  instance_count            = var.instance_count
+  instance_size             = var.instance_size
+  resource_group_name       = var.resource_group_name
+  resource_group_location   = var.resource_group_location
+  admin_username            = var.admin_username
+  public_key                = var.public_key
+  private_key               = var.private_key
   mgmt_plane_subnet_id      = data.azurerm_subnet.mgmt_plane.id
-  aion_image_name           = "newaionimage"
-  aion_url                  = "https://spirent.spirentaion.com"
+  aion_image_name           = var.aion_image_name
+  aion_url                  = var.aion_url
   aion_user                 = var.aion_user
   aion_password             = var.aion_password
   admin_password            = var.admin_password
@@ -35,15 +35,5 @@ output "instance_public_ips" {
   value = module.aion.*.instance_public_ips
 }
 
-variable "admin_password" {
-  description = "New cluster admin password. Specify using command line or env variables."
-}
 
-variable "aion_password" {
-  description = "AION password. Specify using command line or env variables."
-}
-
-variable "aion_user" {
-  description = "AION user. Specify using command line or env variables."
-}
 

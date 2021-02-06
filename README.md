@@ -1,21 +1,23 @@
 # Spirent AION Platform Terraform
 
+![Image of Spirent AION](./images/aion.jpg)
+
 ## Description
 
 Run Spirent AION platform instances.  After Terraform apply finishes you will be able to point your browser at the instance_public_ips addresses.
 
-If you would like to configure the Spirent AION platform in a web browser set the variable enable_provisioner=false.  Otherwise when enable_provisioner=true the instance will be configured however license entitlement & product installation should be completed in your web browser (see below).
+If you would like to configure the Spirent AION platform in a web browser set the variable enable_provisioner=false.  When enable_provisioner=true the instance will be configured.  However, license entitlement & product installation will need to be completed in your web browser (see below).  Login to the platform instance https://<your_public_ip> using the values of admin_email and admin_password.
 
 ### Add License Entitlements
-1. Navigate to "License Manager" "Entitlements"
-2. Click on "Install Entitlements"
+1. From "Settings" <img src="./images/aion_settings.jpg" width="22" height="22"/> navigate to "License Manager", "Entitlements"
+2. Click "Install Entitlements"
 3. Use one of the following methods to add entitlements (#1 is prefered)
-   1. Login to <your_org>.spirentaion.com and select entitlements to host in the new instance
-      Note: Hosted entitlements should be released before destroying the instance.  When entitlements are not released you will need to contact Spirent support to release them for you.
+   1. Login to <your_org>.spirentaion.com and select entitlements to host in the new instance\
+      **Note:** Hosted entitlements should be released before destroying the instance.  When entitlements are not released you will need to contact Spirent support to release them for you.
    2. Install a license entitlement file obtained from Spirent support
 
 ### Add Products
-1. Navigate to "Settings" "Add New Products"
+1. From "Settings" <img src="./images/aion_settings.jpg" width="22" height="22"/> navigate to "Settings", "Add New Products"
 2. Click "Install New Products"
 3. Select products and versions and click "Install"
 
@@ -49,7 +51,7 @@ If you would like to configure the Spirent AION platform in a web browser set th
 | aion\_url | AION URL | `string` | n/a | yes |
 | aion\_user | AION user registered on aion\_url | `string` | n/a | yes |
 | cluster\_names | Instance cluster names.  List length must equal instance\_count. | `list(string)` | `[]` | no |
-| dest\_dir | Destination directory on the instance where provisining files will be copied | `string` | `"~"` | no |
+| dest\_dir | Destination directory on the instance where provisioning files will be copied | `string` | `"~"` | no |
 | enable\_provisioner | Enable provisioning | `bool` | `true` | no |
 | http\_enabled | Allow HTTP access as well as HTTPS.  Normally this is not recommended. | `bool` | `false` | no |
 | ingress\_cidr\_blocks | List of management interface ingress IPv4/IPv6 CIDR ranges. | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
@@ -64,8 +66,10 @@ If you would like to configure the Spirent AION platform in a web browser set th
 | node\_storage\_remote\_uri | Cluster node storage URI.  Leave blank for default when provider is local | `string` | `""` | no |
 | private\_key\_file | File path to private key | `string` | n/a | yes |
 | public\_key | File path to public key. | `string` | n/a | yes |
-| resource\_group\_location | RG location in Azure | `string` | `""` | no |
-| resource\_group\_name | RG name in Azure | `string` | `""` | no |
+| resource\_group\_location | RG location in Azure | `string` | `"West US 2"` | no |
+| resource\_group\_name | RG name in Azure | `string` | `"default"` | no |
+| storage\_account\_name | Storage account in Azure. | `string` | `"radhikawestus2"` | no |
+| virtual\_network\_name | VNET name in Azure | `string` | `"STCv"` | no |
 
 ## Outputs
 

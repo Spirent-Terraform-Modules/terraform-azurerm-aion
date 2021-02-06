@@ -158,7 +158,7 @@ resource "null_resource" "provisioner" {
     host        = azurerm_linux_virtual_machine.aion[count.index].public_ip_address
     type        = "ssh"
     user        = var.admin_username
-    private_key = file(var.private_key_file)
+    private_key = file(var.private_key)
   }
 
   # copy install script
