@@ -1,9 +1,3 @@
-provider "azurerm" {
-  version                    = ">=2.37.0"
-  skip_provider_registration = "true"
-  features {}
-}
-
 resource "azurerm_network_security_group" "mgmt_plane" {
 
   name                = "nsg-${var.instance_name}"
