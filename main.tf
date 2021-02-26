@@ -94,13 +94,13 @@ resource "azurerm_network_interface_security_group_association" "mgmt_plane" {
 }
 
 data "azurerm_image" "aion" {
-  name                      = var.aion_image_name
-  resource_group_name       = var.resource_group_name
+  name                = var.aion_image_name
+  resource_group_name = var.resource_group_name
 }
 
 data "template_file" "setup_aion" {
-  count                     = var.enable_provisioner ? var.instance_count : 0
-  template                  = file("${path.module}/setup-aion.tpl")
+  count    = var.enable_provisioner ? var.instance_count : 0
+  template = file("${path.module}/setup-aion.tpl")
   vars = {
     script_file             = "${var.dest_dir}/setup-aion.py"
     platform_addr           = azurerm_linux_virtual_machine.aion[count.index].public_ip_address
@@ -142,7 +142,7 @@ resource "azurerm_linux_virtual_machine" "aion" {
     storage_account_type = "Standard_LRS"
   }
 
-  source_image_id        = data.azurerm_image.aion.id
+  source_image_id = data.azurerm_image.aion.id
 }
 
 # provision the AION VM
@@ -168,8 +168,8 @@ resource "null_resource" "provisioner" {
 
   # run setup AION
   provisioner "remote-exec" {
-     inline = [
-       "bash ${var.dest_dir}/setup-aion.sh"
-     ]
-   }
+    inline = [
+      "bash ${var.dest_dir}/setup-aion.sh"
+    ]
+  }
 }

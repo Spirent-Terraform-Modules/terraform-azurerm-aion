@@ -5,16 +5,25 @@ Run Spirent AION Platform.
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| terraform | >= 0.13.0 |
-| azurerm | >=2.37.0 |
+No requirements.
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| azurerm | >=2.37.0 |
+| azurerm | n/a |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| aion | ../.. |  |
+
+## Resources
+
+| Name |
+|------|
+| [azurerm_subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) |
 
 ## Inputs
 
@@ -22,7 +31,7 @@ Run Spirent AION Platform.
 |------|-------------|------|---------|:--------:|
 | admin\_password | New cluster admin password. Specify using command line or env variables. | `any` | n/a | yes |
 | admin\_username | Administrator user name. | `string` | `"azureuser"` | no |
-| aion\_image\_name | AION image created from private vhd file | `string` | `"newaionimage"` | no |
+| aion\_image\_name | AION image created from private vhd file | `string` | `"aionimage"` | no |
 | aion\_password | AION password. Specify using command line or env variables. | `any` | n/a | yes |
 | aion\_url | AION URL | `string` | `"https://spirent.spirentaion.com"` | no |
 | aion\_user | AION user. Specify using command line or env variables. | `any` | n/a | yes |
@@ -40,5 +49,4 @@ Run Spirent AION Platform.
 | Name | Description |
 |------|-------------|
 | instance\_public\_ips | List of public IP addresses assigned to the instances, if applicable |
-
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
