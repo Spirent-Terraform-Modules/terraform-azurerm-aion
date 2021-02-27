@@ -20,19 +20,16 @@ variable "instance_name" {
 variable "resource_group_name" {
   type        = string
   description = "RG name in Azure"
-  default     = ""
 }
 
 variable "resource_group_location" {
   type        = string
   description = "RG location in Azure"
-  default     = ""
 }
 
 variable "mgmt_plane_subnet_id" {
   description = "Management public Azure subnet ID."
   type        = string
-  default     = ""
 }
 
 variable "enable_provisioner" {
@@ -44,7 +41,6 @@ variable "enable_provisioner" {
 variable "ingress_cidr_blocks" {
   description = "List of management interface ingress IPv4/IPv6 CIDR ranges."
   type        = list(string)
-  default     = ["0.0.0.0/0"]
 }
 
 variable "aion_url" {
