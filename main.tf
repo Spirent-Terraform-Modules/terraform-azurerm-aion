@@ -23,7 +23,7 @@ resource "azurerm_network_security_group" "mgmt_plane" {
     access                     = "Allow"
     protocol                   = "Tcp"
     source_port_range          = "*"
-    destination_port_range     = 80
+    destination_port_range     = "80"
     source_address_prefixes    = var.ingress_cidr_blocks
     destination_address_prefix = "*"
   }
@@ -46,8 +46,8 @@ resource "azurerm_network_security_group" "mgmt_plane" {
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "Tcp"
-    source_port_range          = "64000"
-    destination_port_range     = "64999"
+    source_port_range          = "*"
+    destination_port_range     = "64000-64999"
     source_address_prefixes    = var.ingress_cidr_blocks
     destination_address_prefix = "*"
   }
