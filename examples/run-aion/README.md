@@ -2,6 +2,16 @@
 
 Run Spirent AION Platform.
 
+## Usage
+
+To run this example you need to execute:
+
+    $ terraform init
+    $ terraform plan
+    $ terraform apply
+
+This example will create resources that will incur a cost. Run `terraform destroy` when you don't need these resources.
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
