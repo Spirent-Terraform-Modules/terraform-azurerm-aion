@@ -21,6 +21,7 @@ module "aion" {
   private_key             = var.private_key
   mgmt_plane_subnet_id    = data.azurerm_subnet.mgmt_plane.id
   aion_image_name         = var.aion_image_name
+  marketplace_version     = var.marketplace_version
   aion_url                = var.aion_url
   aion_user               = var.aion_user
   aion_password           = var.aion_password
@@ -34,6 +35,3 @@ output "instance_public_ips" {
   description = "List of public IP addresses assigned to the instances, if applicable"
   value       = module.aion.*.instance_public_ips
 }
-
-
-

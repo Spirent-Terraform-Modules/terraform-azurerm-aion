@@ -27,6 +27,12 @@ variable "resource_group_location" {
   description = "RG location in Azure"
 }
 
+variable "os_disk_size_gb" {
+  type        = number
+  description = "Size of the OS disk in GB. When null size will be determined from the image."
+  default     = null
+}
+
 variable "mgmt_plane_subnet_id" {
   description = "Management public Azure subnet ID."
   type        = string
@@ -145,6 +151,13 @@ variable "admin_username" {
 }
 
 variable "aion_image_name" {
-  description = "AION image created from private vhd file"
+  description = "AION image created from private vhd file.  This variable overrides the marketplace image."
   type        = string
+  default     = ""
+}
+
+variable "marketplace_version" {
+  description = "The Spirent AION image version (e.g. 0517.0.0). When not specified, the latest marketplace image will be used."
+  type        = string
+  default     = "latest"
 }

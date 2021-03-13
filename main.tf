@@ -94,6 +94,7 @@ resource "azurerm_network_interface_security_group_association" "mgmt_plane" {
 }
 
 data "azurerm_image" "aion" {
+  count               = var.aion_image_name != "" ? 1 : 0
   name                = var.aion_image_name
   resource_group_name = var.resource_group_name
 }
@@ -140,9 +141,29 @@ resource "azurerm_linux_virtual_machine" "aion" {
     name                 = "osdisk-${var.instance_name}-${count.index}"
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
+    disk_size_gb         = var.os_disk_size_gb
   }
 
-  source_image_id = data.azurerm_image.aion.id
+  source_image_id = var.aion_image_name != "" ? data.azurerm_image.aion[0].id : null
+  dynamic "source_image_reference" {
+    for_each = var.aion_image_name != "" ? [] : [1]
+    content {
+      publisher = "spirentcommunications1594084187199"
+      offer     = "aion"
+      sku       = "aion"
+      version   = var.marketplace_version != "" ? var.marketplace_version : "latest"
+    }
+  }
+
+  dynamic "plan" {
+    for_each = var.aion_image_name != "" ? [] : [1]
+    content {
+      publisher = "spirentcommunications1594084187199"
+      name      = "aion"
+      product   = "aion"
+    }
+  }
+
 }
 
 # provision the AION VM
