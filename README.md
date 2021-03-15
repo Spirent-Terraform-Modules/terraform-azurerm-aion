@@ -63,7 +63,7 @@ No Modules.
 | admin\_last\_name | Cluster admin user last name.  Default is obtained from AION user information. | `string` | `""` | no |
 | admin\_password | Cluster admin user password. Use this to login to the instance web page. | `string` | n/a | yes |
 | admin\_username | Administrator user name. | `string` | n/a | yes |
-| aion\_image\_name | AION image created from private vhd file | `string` | n/a | yes |
+| aion\_image\_name | AION image created from private vhd file.  This variable overrides the marketplace image. | `string` | `""` | no |
 | aion\_password | AION user password for aion\_url | `string` | n/a | yes |
 | aion\_url | AION URL | `string` | n/a | yes |
 | aion\_user | AION user registered on aion\_url | `string` | n/a | yes |
@@ -76,11 +76,13 @@ No Modules.
 | instance\_name | Name assigned to the AION instance.  An instance number will be appended to the name. | `string` | `"aion"` | no |
 | instance\_size | The Azure Virtual Machine SKU. | `string` | n/a | yes |
 | local\_admin\_password | Cluster local admin password for instance SSH access.  Will use admin\_password if not specified. | `string` | `""` | no |
+| marketplace\_version | The Spirent AION image version (e.g. 0517.0.0). When not specified, the latest marketplace image will be used. | `string` | `"latest"` | no |
 | metrics\_opt\_out | Opt-out of Spirent metrics data collection | `bool` | `false` | no |
 | mgmt\_plane\_subnet\_id | Management public Azure subnet ID. | `string` | n/a | yes |
 | node\_names | Instance cluster node names.  List length must equal instance\_count. | `list(string)` | `[]` | no |
 | node\_storage\_provider | Cluster node storage provider | `string` | `"local"` | no |
 | node\_storage\_remote\_uri | Cluster node storage URI.  Leave blank for default when provider is local | `string` | `""` | no |
+| os\_disk\_size\_gb | Size of the OS disk in GB. When null size will be determined from the image. | `number` | `null` | no |
 | private\_key | File path to private key | `string` | n/a | yes |
 | public\_key | File path to public key. | `string` | n/a | yes |
 | resource\_group\_location | RG location in Azure | `string` | n/a | yes |

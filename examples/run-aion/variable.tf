@@ -53,9 +53,15 @@ variable "private_key" {
 }
 
 variable "aion_image_name" {
-  description = "AION image created from private vhd file"
+  description = "AION image created from private vhd file. This variable overrides the marketplace image."
   type        = string
-  default     = "aionimage"
+  default     = ""
+}
+
+variable "marketplace_version" {
+  description = "The Spirent AION image version (e.g. 0517.0.0). When not specified, the latest marketplace image will be used."
+  type        = string
+  default     = "latest"
 }
 
 variable "admin_password" {
