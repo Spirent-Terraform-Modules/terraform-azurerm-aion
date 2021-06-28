@@ -53,7 +53,7 @@ resource "azurerm_network_security_group" "mgmt_plane" {
   }
 
   security_rule {
-    name                       = "application-usage2"
+    name                       = "labserver-session-manager"
     priority                   = 105
     direction                  = "Inbound"
     access                     = "Allow"

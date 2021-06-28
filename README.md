@@ -29,7 +29,7 @@ module "aion" {
 
   resource_group_name     = "default"
   resource_group_location = "West US 2"
-  mgmt_plane_subnet_id    =  "subnet-id-123456"
+  mgmt_plane_subnet_id    = "subnet-id-123456"
 
   ingress_cidr_blocks = ["0.0.0.0/0"]
 
