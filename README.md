@@ -4,13 +4,45 @@
 
 ## Description
 [Spirent AION](https://www.spirent.com/products/aion) is a cloud platform for Spirent products and license management.
-This Terraform module deploys the [Spirent AION Azure Image](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/spirentcommunications1594084187199.testcenter_virtual?tab=overview) on Azure using your spirentaion.com account.
+This Terraform module deploys the [Spirent AION Azure Image](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/spirentcommunications1594084187199.aion?tab=overview) on Azure using your spirentaion.com account.
 
 After `terraform apply` finishes you will be able to point your browser at the `instance_public_ips` addresses to use the platform or perform additional configuration.
 
 Set `enable_provisioner=false` to run the configuration wizard manually in a web browser.  Otherwise, when `enable_provisioner=true` login to https://<your_public_ip> using the values of `admin_email` and `admin_password`.
 
 See [product configuration](#product-configuration) for automated and manual configuration details.
+
+## Prerequisites
+- Azure user credentials (az login)
+- Accept [Spirent AION Image](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/spirentcommunications1594084187199.aion?tab=overview) product terms on Azure Marketplace
+  - `az vm image list --all --publisher spirentcommunications1594084187199  --offer aion`
+  - `az vm image terms accept --urn <selected_urn>`
+- Create public and private key files
+
+## Terraform examples
+Terraform examples are located in the [examples](./examples) folder.
+
+### Basic usage
+```
+module "aion" {
+  source = "git::https://github.com/Spirent-Terraform-Modules/terraform-azurerm-aion"
+
+  resource_group_name     = "default"
+  resource_group_location = "West US 2"
+  mgmt_plane_subnet_id    =  "subnet-id-123456"
+
+  ingress_cidr_blocks = ["0.0.0.0/0"]
+
+  public_key  = "./bootstrap_public_key_file"
+  private_key = "./bootstrap_private_key_file"
+
+  aion_url       = "https://spirent.spirentaion.com"
+  aion_user      = "user1@spirent.com"
+  aion_password  = "aion-password"
+  admin_password = "admin-password"
+}
+```
+
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -59,8 +91,11 @@ No Modules.
 | aion\_url | AION URL | `string` | n/a | yes |
 | aion\_user | AION user registered on aion\_url | `string` | n/a | yes |
 | cluster\_names | Instance cluster names.  List length must equal instance\_count. | `list(string)` | `[]` | no |
+| deploy\_location | Location name for deployed product instances. | `string` | `"location1"` | no |
+| deploy\_products | List of products to deploy. See Product List below for details. | `list(map(string))` | `[]` | no |
 | dest\_dir | Destination directory on the instance where provisioning files will be copied | `string` | `"~"` | no |
 | enable\_provisioner | Enable provisioning.  When enabled instances will be initialized with the specified variables. | `bool` | `true` | no |
+| entitlements | Install hosted entitlements from organization's AION platform. See Entitlement List below for details. | `list(map(string))` | `[]` | no |
 | http\_enabled | Allow HTTP access as well as HTTPS.  Normally this is not recommended. | `bool` | `false` | no |
 | ingress\_cidr\_blocks | List of management interface ingress IPv4/IPv6 CIDR ranges. | `list(string)` | n/a | yes |
 | instance\_count | Number of instances to create. | `number` | `1` | no |

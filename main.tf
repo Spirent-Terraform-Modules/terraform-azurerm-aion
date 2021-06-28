@@ -200,16 +200,17 @@ resource "azurerm_linux_virtual_machine" "aion" {
 resource "null_resource" "provisioner" {
   count = var.enable_provisioner ? var.instance_count : 0
   triggers = {
-    dest_dir    = var.dest_dir
-    host        = aws_instance.aion[count.index].public_ip
-    private_key = file(var.private_key)
+    dest_dir       = var.dest_dir
+    host           = azurerm_linux_virtual_machine.aion[count.index].public_ip_address
+    private_key    = file(var.private_key)
     admin_username = var.admin_username
   }
   connection {
-    host        = self.trigers.host
+    host        = self.triggers.host
     type        = "ssh"
-    user        = self.trigers.admin_username
+    user        = self.triggers.admin_username
     private_key = self.triggers.private_key
+    agent       = false
   }
 
   # copy install script
@@ -221,6 +222,16 @@ resource "null_resource" "provisioner" {
   provisioner "file" {
     content     = data.template_file.setup_aion[count.index].rendered
     destination = "${var.dest_dir}/setup-aion.sh"
+  }
+
+  provisioner "file" {
+    source      = "${path.module}/release-aion.py"
+    destination = "${var.dest_dir}/release-aion.py"
+  }
+
+  provisioner "file" {
+    content     = data.template_file.release_aion[count.index].rendered
+    destination = "${var.dest_dir}/release-aion.sh"
   }
 
   # run setup AION

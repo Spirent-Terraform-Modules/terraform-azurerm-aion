@@ -12,24 +12,27 @@ data "azurerm_subnet" "mgmt_plane" {
 module "aion" {
   source = "../.."
 
-  instance_count          = var.instance_count
+  marketplace_version     = var.marketplace_version
+  aion_image_name         = var.aion_image_name
   instance_size           = var.instance_size
+  instance_count          = var.instance_count
   resource_group_name     = var.resource_group_name
   resource_group_location = var.resource_group_location
-  admin_username          = var.admin_username
-  public_key              = var.public_key
-  private_key             = var.private_key
   mgmt_plane_subnet_id    = data.azurerm_subnet.mgmt_plane.id
-  aion_image_name         = var.aion_image_name
-  marketplace_version     = var.marketplace_version
-  aion_url                = var.aion_url
-  aion_user               = var.aion_user
-  aion_password           = var.aion_password
-  admin_password          = var.admin_password
-
   # Warning: Using all address cidr block to simplify the example. You should restrict addresses to your public network.
   ingress_cidr_blocks = ["0.0.0.0/0"]
 
+  public_key  = var.public_key
+  private_key = var.private_key
+
+  aion_url       = var.aion_url
+  aion_user      = var.aion_user
+  aion_password  = var.aion_password
+  admin_username = var.admin_username
+  admin_password = var.admin_password
+  http_enabled   = true
+
+  os_disk_size_gb = 60
 
   deploy_location = "labserver"
   deploy_products = [
