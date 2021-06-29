@@ -1,6 +1,6 @@
-## Run Spirent AION Platform
+## Run Spirent AION Platform Labserver
 
-Run Spirent AION Platform.
+Run Spirent AION Platform, deploy STC LabServer product and use hosted Spirent TestCenter license entitlements.
 
 ## Usage
 
@@ -13,6 +13,7 @@ To run this example you need to execute:
 This example will create resources that will incur a cost. Run `terraform destroy` when you don't need these resources.
 
 **Note:** [Prerequisites](../../README.md#Prerequisites) are also required.
+
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements

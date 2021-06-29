@@ -53,6 +53,18 @@ resource "azurerm_network_security_group" "mgmt_plane" {
   }
 
   security_rule {
+    name                       = "labserver-session-manager"
+    priority                   = 105
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "49000-50000"
+    source_address_prefixes    = var.ingress_cidr_blocks
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
     name                       = "icmp"
     priority                   = 106
     direction                  = "Inbound"
@@ -119,6 +131,24 @@ data "template_file" "setup_aion" {
     node_storage_remote_uri = var.node_storage_remote_uri
     metrics_opt_out         = var.metrics_opt_out
     http_enabled            = var.http_enabled
+    deploy_location         = var.deploy_location
+    deploy_products         = jsonencode(var.deploy_products)
+    entitlements            = jsonencode(var.entitlements)
+  }
+}
+
+data "template_file" "release_aion" {
+  count    = var.enable_provisioner ? var.instance_count : 0
+  template = file("${path.module}/release-aion.tpl")
+  vars = {
+    script_file          = "${var.dest_dir}/release-aion.py"
+    platform_addr        = azurerm_linux_virtual_machine.aion[count.index].public_ip_address
+    aion_url             = var.aion_url
+    aion_user            = var.aion_user
+    aion_password        = var.aion_password
+    admin_email          = var.admin_email
+    admin_password       = var.admin_password
+    local_admin_password = var.local_admin_password
   }
 }
 
@@ -169,11 +199,18 @@ resource "azurerm_linux_virtual_machine" "aion" {
 # provision the AION VM
 resource "null_resource" "provisioner" {
   count = var.enable_provisioner ? var.instance_count : 0
+  triggers = {
+    dest_dir       = var.dest_dir
+    host           = azurerm_linux_virtual_machine.aion[count.index].public_ip_address
+    private_key    = file(var.private_key)
+    admin_username = var.admin_username
+  }
   connection {
-    host        = azurerm_linux_virtual_machine.aion[count.index].public_ip_address
+    host        = self.triggers.host
     type        = "ssh"
-    user        = var.admin_username
-    private_key = file(var.private_key)
+    user        = self.triggers.admin_username
+    private_key = self.triggers.private_key
+    agent       = false
   }
 
   # copy install script
@@ -187,10 +224,28 @@ resource "null_resource" "provisioner" {
     destination = "${var.dest_dir}/setup-aion.sh"
   }
 
+  provisioner "file" {
+    source      = "${path.module}/release-aion.py"
+    destination = "${var.dest_dir}/release-aion.py"
+  }
+
+  provisioner "file" {
+    content     = data.template_file.release_aion[count.index].rendered
+    destination = "${var.dest_dir}/release-aion.sh"
+  }
+
   # run setup AION
   provisioner "remote-exec" {
     inline = [
       "bash ${var.dest_dir}/setup-aion.sh"
+    ]
+  }
+
+  # destroy provisioner
+  provisioner "remote-exec" {
+    when = destroy
+    inline = [
+      "bash ${self.triggers.dest_dir}/release-aion.sh"
     ]
   }
 }
